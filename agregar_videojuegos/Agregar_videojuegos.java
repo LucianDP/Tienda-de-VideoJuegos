@@ -1,41 +1,39 @@
 package agregar_videojuegos;
 
 public class Agregar_videojuegos {
-    private static int id = 0;
+    private static int contadorId = 1;
+    private int id;
     private String nombre;
     private String plataforma;
     private double precio;
     private int stock;
-    private int id_juego;
 
     public Agregar_videojuegos(String nombre, String plataforma, double precio, int stock) {
-        this.id_juego = id;
-        id++;
+        this.id = contadorId++;
         this.nombre = nombre;
         this.plataforma = plataforma;
         this.precio = precio;
         this.stock = stock;
-
     }
 
-    public int getId_juego() {
-        return this.id_juego;
+    public int getId() {
+        return id;
     }
 
     public String getNombre() {
-        return this.nombre;
+        return nombre;
     }
 
     public String getPlataforma() {
-        return this.plataforma;
+        return plataforma;
     }
 
     public double getPrecio() {
-        return this.precio;
+        return precio;
     }
 
     public int getStock() {
-        return this.stock;
+        return stock;
     }
 
     public void setNombre(String nombre) {
@@ -54,11 +52,13 @@ public class Agregar_videojuegos {
         this.stock = stock;
     }
 
-    public String mostrarInfo(){
-        return ("ID: " + this.id_juego +
-        "\nNombre: " + this.nombre +
-        "\nPlataforma: " + this.plataforma +
-        "\nPrecio: " + this.precio +
-        "\nStock: " + this.stock +"\n");
+    public String mostrarInfo() {
+        return "ID: " + id +
+                "\nNombre: " + nombre +
+                "\nPlataforma: " + plataforma +
+                "\nPrecio: " + precio + "€" +
+                "\nStock: " + stock + " unidades" +
+                "\n-------------------------\n";
     }
+
 }

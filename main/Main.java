@@ -8,34 +8,41 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         boolean flag = true;
 
-        Agregar_videojuegos objetos_juegos[] = new Agregar_videojuegos[10];
+        //NOTA MENTAL MEJORAR NECESARIAMENTE RAPIDO LOS ARRAYS BIDIMENSIONALES SI O SI, PORQUE LA IA EN ESTE APARTADO A HECHO MAS QUE TU...
+        String[][] rendimiento_anual = {
+                { "0", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" },
+                { "PC", "", "", "", "", "", "", "", "", "", "", "", "" },
+                { "Xbox", "", "", "", "", "", "", "", "", "", "", "", "" },
+                { "PlayStation", "", "", "", "", "", "", "", "", "", "", "", "" },
+                { "Nintendo", "", "", "", "", "", "", "", "", "", "", "", "" }
+        };
 
-        String[] nombres = new String[10];
-        String[] plataformas = new String[10];
-        double[] precios = new double[10];
-        int[] stock = new int[10];
-
+        Agregar_videojuegos[] objetos_juegos = new Agregar_videojuegos[10];
         int contador_juegos = 0;
-        while (flag) {
-            System.out.print("==== GESTOR DE TIENDA DE VIDEOJUEGOS ====\n" +
-                    "1. Agregar videojuego\n" +
-                    "2. Listar videojuegos\n" +
-                    "3. Buscar videojuego por nombre\n" +
-                    "4. Actualizar stock\n" +
-                    "5. Eliminar videojuego\n" +
-                    "6. Mostrar estadísticas\n" +
-                    "7. Mostrar ventas por plataformas (array bidimensional)\n" +
-                    "8. Salir\n" + "");
-            int pedir;
-            do {
-                System.out.print("Ingrese una opción: ");
-                pedir = sc.nextInt();
-            } while (pedir < 1 || pedir > 8);
 
-            switch (pedir) {
+        while (flag) {
+            System.out.println("""
+                    ==== GESTOR DE TIENDA DE VIDEOJUEGOS ====
+                    1. Agregar videojuego
+                    2. Listar videojuegos
+                    3. Buscar videojuego por nombre
+                    4. Actualizar stock
+                    5. Eliminar videojuego
+                    6. Mostrar estadísticas
+                    7. Mostrar ventas por plataformas
+                    8. Salir
+                    """);
+
+            int opcion;
+            do {
+                System.out.print("Ingrese una opción (1-8): ");
+                opcion = sc.nextInt();
+            } while (opcion < 1 || opcion > 8);
+
+            switch (opcion) {
                 case 1:
-                    if (nombres.length < 10 || nombres.length > 0) {
-                        System.out.print("==== AGREGAR VIDEOJUEGO ====\n");
+                    if (contador_juegos < objetos_juegos.length) {
+                        System.out.print("\n==== AGREGAR VIDEOJUEGO ====\n");
                         System.out.print("Nombre: ");
                         String nombre = sc.next();
                         System.out.print("Plataforma: ");
@@ -43,145 +50,147 @@ public class Main {
                         System.out.print("Precio (€): ");
                         double precio = sc.nextDouble();
                         System.out.print("Stock: ");
-                        int stock_juego = sc.nextInt();
-                        Agregar_videojuegos v1 = new Agregar_videojuegos(nombre, plataforma, precio, stock_juego);
-                        System.out.println("Video-Juego agregado correctamente!");
+                        int stock = sc.nextInt();
 
+                        objetos_juegos[contador_juegos] = new Agregar_videojuegos(nombre, plataforma, precio, stock);
                         contador_juegos++;
 
-                        objetos_juegos[contador_juegos] = v1;
-
-                        nombres[contador_juegos] = v1.getNombre();
-                        plataformas[contador_juegos] = v1.getPlataforma();
-                        precios[contador_juegos] = v1.getPrecio();
-                        stock[contador_juegos] = v1.getStock();
+                        System.out.println("Videojuego agregado correctamente.\n");
                     } else {
-                        System.out.println("Has introducido 10 videojuegos.\nLimite alcanzado");
+                        System.out.println("Límite de 10 videojuegos alcanzado.\n");
                     }
                     break;
+
                 case 2:
-                    if (objetos_juegos != null) {
-                        System.out.print("=== LISTA DE JUEGOS ===");
-                        for (int i = 0; i < objetos_juegos.length; i++) {
-                            objetos_juegos[i].mostrarInfo();
+                    System.out.println("\n==== LISTA DE VIDEOJUEGOS ====");
+                    for (int i = 0; i < objetos_juegos.length; i++) {
+                        if (objetos_juegos[i] != null) {
+                            System.out.println(objetos_juegos[i].mostrarInfo());
                         }
-                    } else {
-                        System.out.println("No hay ningun juego guardado");
                     }
                     break;
+
                 case 3:
-                    System.out.println("=== BUSCADOR DE JUEGOS ===");
-                    System.out.print("Escribe el nombre del juego: ");
-                    String nombre_buscador = sc.next();
+                    System.out.println("\n==== BUSCAR VIDEOJUEGO ====");
+                    System.out.print("Escriba el nombre del videojuego: ");
+                    String buscar = sc.next();
 
-                    for (int i = 0; i < nombres.length; i++) {
-                        if (nombres[i].toLowerCase() == nombre_buscador.toLowerCase()) {
-                            System.out.println("Juego encontrado!");
-                            objetos_juegos[i].mostrarInfo();
-                        } else {
-                            System.out.println("Juego no encontrado");
+                    boolean encontrado = false;
+                    for (int i = 0; i < objetos_juegos.length; i++) {
+                        if (objetos_juegos[i] != null && objetos_juegos[i].getNombre().equalsIgnoreCase(buscar)) {
+                            System.out.println("Videojuego encontrado:");
+                            System.out.println(objetos_juegos[i].mostrarInfo());
+                            encontrado = true;
+                            break;
                         }
                     }
+                    if (!encontrado) {
+                        System.out.println("No se encontró ningún videojuego con ese nombre.\n");
+                    }
                     break;
+
                 case 4:
-                    System.out.println("=== ACTUALIZAR STOCK ===");
-                    System.out.print("Escribe el nombre del juego: ");
-                    String nombre_actualizar = sc.next();
-                    Agregar_videojuegos objeto_agregarQuitar;
-                    for (int i = 0; i < nombres.length; i++) {
-                        if (nombres[i].toLowerCase() == nombre_actualizar.toLowerCase()) {
-                            objeto_agregarQuitar = objetos_juegos[i];
-                            String quitar_agregar;
-                            do {
-                                System.out.println("Quieres agregar o quitar unidades? ");
-                                quitar_agregar = sc.next();
-                            } while (quitar_agregar.toLowerCase() != "quitar"
-                                    || quitar_agregar.toLowerCase() != "agregar");
+                    System.out.println("\n==== ACTUALIZAR STOCK ====");
+                    System.out.print("Escriba el nombre del videojuego: ");
+                    String actualizar = sc.next();
 
-                            if (quitar_agregar.toLowerCase() == "quitar") {
-                                System.out.print("Cuantas unidades quieres quitar? ");
-                                int unidades_quitar = sc.nextInt();
-                                if (objeto_agregarQuitar.getStock() > unidades_quitar) {
-                                    objeto_agregarQuitar.setStock(-unidades_quitar);
+                    boolean modificado = false;
+                    for (int i = 0; i < objetos_juegos.length; i++) {
+                        if (objetos_juegos[i] != null && objetos_juegos[i].getNombre().equalsIgnoreCase(actualizar)) {
+                            System.out.print("¿Desea agregar o quitar unidades? (agregar/quitar): ");
+                            String accion = sc.next();
+
+                            if (accion.equalsIgnoreCase("quitar")) {
+                                System.out.print("¿Cuántas unidades desea quitar?: ");
+                                int quitar = sc.nextInt();
+                                if (objetos_juegos[i].getStock() >= quitar) {
+                                    objetos_juegos[i].setStock(objetos_juegos[i].getStock() - quitar);
+                                    System.out.println("Stock actualizado correctamente.\n");
                                 } else {
-                                    System.out.println("No tienes tanto stock para quitar");
+                                    System.out.println("No hay suficiente stock.\n");
                                 }
+                            } else if (accion.equalsIgnoreCase("agregar")) {
+                                System.out.print("¿Cuántas unidades desea agregar?: ");
+                                int agregar = sc.nextInt();
+                                objetos_juegos[i].setStock(objetos_juegos[i].getStock() + agregar);
+                                System.out.println("Stock actualizado correctamente.\n");
                             }
-
-                            if (quitar_agregar.toLowerCase() == "agregar") {
-                                System.out.print("Cuantas unidades quiere agregar? ");
-                                int unidades_agregar = sc.nextInt();
-                                objeto_agregarQuitar.setStock(+unidades_agregar);
-                            }
+                            modificado = true;
+                            break;
                         }
                     }
-
-                    System.out.println("STOCK ACTUALIZADO!");
+                    if (!modificado) {
+                        System.out.println("No se encontró el videojuego indicado.\n");
+                    }
                     break;
+
                 case 5:
-                    System.out.println("=== ELIMINAR JUEGO ===");
-                    System.out.print("Escribe el nombre del juego: ");
-                    String juego_borrar = sc.next();
-                    Agregar_videojuegos objeto_eliminar;
-                    for (int i = 0; i < nombres.length; i++) {
-                        if (nombres[i].toLowerCase() == juego_borrar.toLowerCase()) {
-                            objeto_eliminar = objetos_juegos[i];
-                            System.out.println(
-                                    "Estas seguro de que quiere eliminar el objeto: " + objeto_eliminar.getNombre());
+                    System.out.println("\n==== ELIMINAR VIDEOJUEGO ====");
+                    System.out.print("Escriba el nombre del videojuego a eliminar: ");
+                    String eliminar = sc.next();
+
+                    boolean borrado = false;
+                    for (int i = 0; i < objetos_juegos.length; i++) {
+                        if (objetos_juegos[i] != null && objetos_juegos[i].getNombre().equalsIgnoreCase(eliminar)) {
+                            System.out.print("¿Seguro que desea eliminarlo? (si/no): ");
                             String respuesta = sc.next();
-                            if (respuesta.toLowerCase() == "si" || respuesta.toLowerCase() == "sí") {
+                            if (respuesta.equalsIgnoreCase("si")) {
                                 objetos_juegos[i] = null;
-                                nombres[i] = null;
-                                plataformas[i] = null;
-                                precios[i] = 0;
-                                stock[i] = 0;
-                                System.out.println("VideoJuego eliminado correctamente!");
+                                System.out.println("Videojuego eliminado correctamente.\n");
                             }
+                            borrado = true;
+                            break;
                         }
                     }
-
+                    if (!borrado) {
+                        System.out.println("No se encontró el videojuego indicado.\n");
+                    }
                     break;
+
                 case 6:
-                    System.out.println("=== ESTADISTICAS ===");
-                    for (int i = 0; i < nombres.length; i++) {
-                        int contador = 0;
-                        if (nombres[i] != null) {
-                            contador++;
-                        }
-                        System.out.print("Hay " + contador + " videojuegos registrados en el inventario");
-                    }
-
-                    for (int i = 0; i < precios.length; i++) {
-                        double media = 0;
-                        if (precios[i] != 0) {
-                            media += precios[i];
-                        }
-                        System.out.println("El precio medio es de " + media + "€");
-                    }
-
-                    for (int i = 0; i < stock.length; i++) {
-                        int unidades = 0;
-                        if (stock[i] != 0) {
-                            unidades += stock[i];
-                        }
-                        System.out.println("Stock total disponible: " + unidades + " unidades");
-                    }
+                    System.out.println("\n==== ESTADÍSTICAS ====");
+                    int total_juegos = 0;
+                    double suma_precios = 0;
+                    int total_stock = 0;
 
                     for (int i = 0; i < objetos_juegos.length; i++) {
-                        int contador = 0;
                         if (objetos_juegos[i] != null) {
-                            contador++;
+                            total_juegos++;
+                            suma_precios += objetos_juegos[i].getPrecio();
+                            total_stock += objetos_juegos[i].getStock();
                         }
-                        int operacion = (contador / objetos_juegos.length) * 100;
-                        System.out.println("Capacidad del inventario: " + operacion + "% ocupado");
                     }
 
-                    break;
-                case 7:
+                    double precio_medio = (total_juegos > 0) ? (suma_precios / total_juegos) : 0;
+                    int porcentaje_ocupado = (total_juegos * 100) / objetos_juegos.length;
 
+                    System.out.println("Videojuegos registrados: " + total_juegos);
+                    System.out.println("Precio medio: " + precio_medio + " €");
+                    System.out.println("Stock total: " + total_stock + " unidades");
+                    System.out.println("Capacidad ocupada del inventario: " + porcentaje_ocupado + "%\n");
                     break;
+
+                case 7:
+                    //LO MISMO QUE EN EL ARRAY DE 2 DIMENSIONES TENEMOS QUE MEJORAR LA LOGICA Y LA VISTA ESPACIAL
+                    System.out.println("\n==== VENTAS POR PLATAFORMAS ====");
+                    for (int i = 1; i < rendimiento_anual.length; i++) {
+                        for (int j = 1; j < rendimiento_anual[i].length; j++) {
+                            int numero = (int) (Math.random() * 101); //RECORDAR PORQUE LO VAS A TENER QUE BUSCAR OTRA VEZ ... RECUERDA
+                            rendimiento_anual[i][j] = String.valueOf(numero);
+                        }
+                    }
+
+                    for (int i = 0; i < rendimiento_anual.length; i++) {
+                        for (int j = 0; j < rendimiento_anual[i].length; j++) {
+                            System.out.print(rendimiento_anual[i][j] + "\t");
+                        }
+                        System.out.println();
+                    }
+                    System.out.println();
+                    break;
+
                 case 8:
-                    System.out.println("Hasta pronto...");
+                    System.out.println("\nHasta pronto...");
                     flag = false;
                     break;
             }
