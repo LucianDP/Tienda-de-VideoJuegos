@@ -37,7 +37,7 @@ Este proyecto se ha diseñado para practicar:
 
 1. Clona el repositorio o descarga los archivos:
    ```bash
-   git clone https://github.com/TU-USUARIO/gestor-videojuegos.git
+   git clone https://github.com/LucianDP/Tienda-de-VideoJuegos.git
 2. Abre el proyecto en tu IDE preferido (IntelliJ, Eclipse, VS Code, etc.).
 
 3. Ejecuta la clase Main.java.
